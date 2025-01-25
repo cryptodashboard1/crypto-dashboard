@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="price-banner">
+        <div class="ticker-container">
+            <div class="main-coins">
+                <div class="ticker-item">
+                    <span class="coin">BTC</span>
+                    <span class="price" id="btc-price">Loading...</span>
+                    <span class="change" id="btc-change">-</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="coin">ETH</span>
+                    <span class="price" id="eth-price">Loading...</span>
+                    <span class="change" id="eth-change">-</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="coin">SOL</span>
+                    <span class="price" id="sol-price">Loading...</span>
+                    <span class="change" id="sol-change">-</span>
+                </div>
+            </div>
+            <div class="scroll-container">
+                <div class="scroll-ticker">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this new tabs section -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('market')">Market Overview</button>
+            <button class="tab-button" onclick="showTab('solana')">Solana</button>
+            <button class="tab-button" onclick="showTab('pump')">Pump.fun</button>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <!-- Market Overview Tab Content -->
+        <div class="tab-content" id="market-tab">
+            <div class="widget-container">
+                <!-- Keep only market overview widgets here -->
+                <div class="widget">
+                    <h2>Total Crypto Market Cap</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/crypto-markets/prices/crypto-total-marketcap/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Bitcoin Dominance</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/crypto-markets/prices/bitcoin-dominance/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Bitcoin Price</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/crypto-markets/prices/btc-price/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Fear and Greed Index</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/crypto-markets/prices/fear-and-greed-index/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Daily Exchange Volume (7DMA)</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/crypto-markets/spot/total-exchange-volume-daily/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Spot Bitcoin ETF Volumes</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/crypto-markets/bitcoin-etf/bitcoin-spot-etf-volumes/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>BlackRock Bitcoin ETF (IBIT) AUM</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/crypto-markets/bitcoin-etf/blackrock-ibit-aum/embed"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solana Tab Content -->
+        <div class="tab-content" id="solana-tab">
+            <div class="widget-container">
+                <!-- Only Solana specific widgets -->
+                <div class="widget">
+                    <h2>Total Fees on Solana</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/on-chain-metrics/solana/total-fees-on-solana/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Jito Validator Tips</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/on-chain-metrics/solana/jito-validator-tips/embed"></iframe>
+                </div>
+
+                <!-- Adding new Active Addresses chart -->
+                <div class="widget">
+                    <h2>Active Addresses (7DMA)</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/on-chain-metrics/solana/number-of-active-addresses-on-the-solana-network-daily-7dma/embed"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pump.fun Tab Content -->
+        <div class="tab-content" id="pump-tab">
+            <div class="widget-container">
+                <!-- Pump.fun widgets here -->
+                <div class="widget">
+                    <h2>Pump.fun Graduated Tokens Volume</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/on-chain-metrics/solana/pump-fun-graduated-tokens-volume-daily/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Pump.fun Percent Graduated Tokens</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/on-chain-metrics/solana/pump-fun-percent-graduated-tokens-daily/embed"></iframe>
+                </div>
+
+                <div class="widget">
+                    <h2>Pump.fun Revenue (Daily)</h2>
+                    <iframe width="100%" height="420" frameborder="0" src="https://www.theblock.co/data/decentralized-finance/dex-non-custodial/pump-fun-revenue-daily/embed"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this before your existing script -->
+    <script>
+        function showTab(tabName) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            
+            // Update active tab button
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Show market tab by default
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('market');
+        });
+
+        async function fetchCryptoData() {
+            try {
+                // Fetch main coins (BTC, ETH, SOL)
+                const mainCoinsResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true');
+                const mainCoinsData = await mainCoinsResponse.json();
+
+                // Update main coins display
+                updatePrice('btc', mainCoinsData.bitcoin);
+                updatePrice('eth', mainCoinsData.ethereum);
+                updatePrice('sol', mainCoinsData.solana);
+
+                // Fetch meme coins
+                const memeCoins = [
+                    'dogecoin',
+                    'shiba-inu',
+                    'pepe',
+                    'floki',
+                    'dogwifhat',
+                    'bonk',
+                    'myro',
+                    'book-of-meme',
+                    'popcat',
+                    'solana-monkey-business',
+                    'samoyedcoin'
+                ];
+                
+                const memeCoinsResponse = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${memeCoins.join(',')}&vs_currencies=usd&include_24hr_change=true`);
+                const memeCoinsData = await memeCoinsResponse.json();
+
+                updateScrollingTicker(memeCoinsData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        function updatePrice(symbol, data) {
+            if (!data) return;
+            
+            const priceElement = document.getElementById(`${symbol}-price`);
+            const changeElement = document.getElementById(`${symbol}-change`);
+            
+            if (priceElement && data.usd) {
+                priceElement.textContent = `$${data.usd.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}`;
+            }
+            
+            if (changeElement && data.usd_24h_change) {
+                const change = data.usd_24h_change.toFixed(2);
+                changeElement.textContent = `${change}%`;
+                changeElement.className = `change ${change >= 0 ? 'positive' : 'negative'}`;
+            }
+        }
+
+        function updateScrollingTicker(data) {
+            const ticker = document.querySelector('.scroll-ticker');
+            if (!ticker) return;
+            
+            ticker.innerHTML = '';
+            
+            // Create first set of items
+            Object.entries(data).forEach(([id, data]) => {
+                if (data.usd && data.usd_24h_change) {
+                    const item = document.createElement('div');
+                    item.className = 'meme-ticker-item';
+                    const price = data.usd.toLocaleString(undefined, {
+                        minimumFractionDigits: 6,
+                        maximumFractionDigits: 6
+                    });
+                    const change = data.usd_24h_change.toFixed(2);
+                    
+                    item.innerHTML = `
+                        <span class="coin">${id.toUpperCase()}</span>
+                        <span class="price">$${price}</span>
+                        <span class="change ${change >= 0 ? 'positive' : 'negative'}">${change}%</span>
+                    `;
+                    ticker.appendChild(item);
+                }
+            });
+
+            // Clone all items and append them again for seamless loop
+            const items = Array.from(ticker.children);
+            items.forEach(item => {
+                const clone = item.cloneNode(true);
+                ticker.appendChild(clone);
+            });
+        }
+
+        // Initial fetch
+        fetchCryptoData();
+
+        // Update every 30 seconds
+        setInterval(fetchCryptoData, 30000);
+    </script>
+</body>
+</html> 
